@@ -1,0 +1,65 @@
+[gd_scene load_steps=5 format=3 uid="uid://bhs0xd4r01jrb"]
+
+[ext_resource type="Script" path="res://ChatBoxController.gd" id="1_g6ufe"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_4i3gr"]
+size = Vector2(20, 20)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xaolb"]
+bg_color = Color(0.635294, 0.372549, 0.870588, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s613w"]
+
+[node name="ChatBox" type="PanelContainer" node_paths=PackedStringArray("inputText", "richText", "minimuzeButton", "title")]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -25.0
+offset_right = 205.0
+grow_vertical = 0
+script = ExtResource("1_g6ufe")
+inputText = NodePath("VBoxContainer/chatInput")
+richText = NodePath("VBoxContainer/RichTextLabel")
+minimuzeButton = NodePath("VBoxContainer/HBoxContainer/minimizeButton")
+title = NodePath("VBoxContainer/HBoxContainer/titleLabel")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="titleLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 15
+text = "Disconected from Server"
+
+[node name="minimizeButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+toggle_mode = true
+icon = SubResource("PlaceholderTexture2D_4i3gr")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer"]
+visible = false
+clip_contents = false
+custom_minimum_size = Vector2(400, 100)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_xaolb")
+bbcode_enabled = true
+scroll_following = true
+autowrap_mode = 1
+shortcut_keys_enabled = false
+threaded = true
+
+[node name="chatInput" type="LineEdit" parent="VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_s613w")
+max_length = 100
+shortcut_keys_enabled = false
+middle_mouse_paste_enabled = false
