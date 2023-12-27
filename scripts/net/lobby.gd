@@ -62,7 +62,9 @@ func create_game():
 
 	var netPlayerInfoRPC = getPlayerNetworData()
 	var peer = ENetMultiplayerPeer.new()
+	peer.get_packet_peer()
 	var error = peer.create_server(PORT, MAX_CONNECTIONS)
+	
 	
 	if error:
 		return error
