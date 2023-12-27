@@ -1,0 +1,192 @@
+[gd_scene load_steps=8 format=3 uid="uid://bffcsrwff5lkq"]
+
+[ext_resource type="Theme" uid="uid://djlxpv3i2vrbh" path="res://MinimalUI/MinimalUI.tres" id="2_dllhr"]
+[ext_resource type="Script" path="res://menuStateMachine.gd" id="2_m7pk7"]
+[ext_resource type="StyleBox" uid="uid://b30uymi7ivhyx" path="res://themes/panleFlatStyle.tres" id="4_wpqow"]
+[ext_resource type="PackedScene" uid="uid://chc4cs4wd112k" path="res://controlPrefabs/conectedUserItem.tscn" id="6_ej5a8"]
+[ext_resource type="Script" path="res://ServerViewController.gd" id="6_ml0pv"]
+[ext_resource type="Script" path="res://loadingPanel.gd" id="7_om76q"]
+[ext_resource type="PackedScene" uid="uid://bhs0xd4r01jrb" path="res://controlPrefabs/chat_box.tscn" id="7_vyjft"]
+
+[node name="Node2D" type="Node2D"]
+metadata/_edit_vertical_guides_ = [-96.0]
+
+[node name="MenuHandler" type="Node" parent="." node_paths=PackedStringArray("startView", "serverView", "clientView", "userView", "loadingPanel", "nameInput", "mainMenuPanel", "targetIpLabel", "readyButton", "startGameButton")]
+script = ExtResource("2_m7pk7")
+startView = NodePath("../SubViewportContainer/SubViewport/background/Panel/StartView")
+serverView = NodePath("../SubViewportContainer/SubViewport/background/Panel/ServerView")
+clientView = NodePath("../SubViewportContainer/SubViewport/background/Panel/clientView")
+userView = NodePath("../SubViewportContainer/SubViewport/background/Panel/user")
+loadingPanel = NodePath("../SubViewportContainer/SubViewport/background/loading")
+nameInput = NodePath("../SubViewportContainer/SubViewport/background/Panel/user/VBoxContainer/HBoxContainer/playerName")
+mainMenuPanel = NodePath("../SubViewportContainer/SubViewport/background")
+targetIpLabel = NodePath("../SubViewportContainer/SubViewport/background/Panel/clientView/VFlowContainer/HFlowContainer/LineEdit")
+readyButton = NodePath("../SubViewportContainer/SubViewport/background/Panel/ServerView/ServerView/HBoxContainer/Ready")
+startGameButton = NodePath("../SubViewportContainer/SubViewport/background/Panel/ServerView/ServerView/HBoxContainer/StartGame")
+gameScene = "res://game.tscn"
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+offset_right = 600.0
+offset_bottom = 512.0
+mouse_filter = 0
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+disable_3d = true
+handle_input_locally = false
+render_target_update_mode = 4
+
+[node name="background" type="Panel" parent="SubViewportContainer/SubViewport"]
+offset_right = 512.0
+offset_bottom = 512.0
+theme = ExtResource("2_dllhr")
+
+[node name="Panel" type="PanelContainer" parent="SubViewportContainer/SubViewport/background"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.155
+anchor_top = 0.1
+anchor_right = 0.845
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("4_wpqow")
+
+[node name="StartView" type="MarginContainer" parent="SubViewportContainer/SubViewport/background/Panel"]
+visible = false
+layout_mode = 2
+
+[node name="StartView" type="VBoxContainer" parent="SubViewportContainer/SubViewport/background/Panel/StartView"]
+layout_mode = 2
+
+[node name="Server" type="Button" parent="SubViewportContainer/SubViewport/background/Panel/StartView/StartView"]
+layout_mode = 2
+text = "create Server"
+
+[node name="Client" type="Button" parent="SubViewportContainer/SubViewport/background/Panel/StartView/StartView"]
+layout_mode = 2
+text = "create Client"
+
+[node name="Button" type="Button" parent="SubViewportContainer/SubViewport/background/Panel/StartView/StartView"]
+layout_mode = 2
+text = "Customize Player"
+
+[node name="ServerView" type="MarginContainer" parent="SubViewportContainer/SubViewport/background/Panel"]
+visible = false
+layout_mode = 2
+script = ExtResource("6_ml0pv")
+playerItemLabelPrefab = ExtResource("6_ej5a8")
+
+[node name="ServerView" type="VFlowContainer" parent="SubViewportContainer/SubViewport/background/Panel/ServerView"]
+layout_mode = 2
+
+[node name="vContainer" type="VBoxContainer" parent="SubViewportContainer/SubViewport/background/Panel/ServerView/ServerView"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SubViewportContainer/SubViewport/background/Panel/ServerView/ServerView"]
+layout_mode = 2
+size_flags_vertical = 10
+alignment = 2
+
+[node name="StartGame" type="Button" parent="SubViewportContainer/SubViewport/background/Panel/ServerView/ServerView/HBoxContainer"]
+layout_mode = 2
+disabled = true
+text = "StartGame"
+
+[node name="Ready" type="Button" parent="SubViewportContainer/SubViewport/background/Panel/ServerView/ServerView/HBoxContainer"]
+layout_mode = 2
+toggle_mode = true
+text = "Ready"
+
+[node name="Cancel" type="Button" parent="SubViewportContainer/SubViewport/background/Panel/ServerView/ServerView/HBoxContainer"]
+layout_mode = 2
+text = "Cancel"
+
+[node name="clientView" type="MarginContainer" parent="SubViewportContainer/SubViewport/background/Panel"]
+visible = false
+layout_mode = 2
+
+[node name="VFlowContainer" type="VFlowContainer" parent="SubViewportContainer/SubViewport/background/Panel/clientView"]
+layout_mode = 2
+
+[node name="HFlowContainer" type="FlowContainer" parent="SubViewportContainer/SubViewport/background/Panel/clientView/VFlowContainer"]
+layout_mode = 2
+alignment = 1
+vertical = true
+
+[node name="Label" type="Label" parent="SubViewportContainer/SubViewport/background/Panel/clientView/VFlowContainer/HFlowContainer"]
+layout_mode = 2
+text = "IP:"
+
+[node name="LineEdit" type="LineEdit" parent="SubViewportContainer/SubViewport/background/Panel/clientView/VFlowContainer/HFlowContainer"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+text = "127.0.0.1"
+placeholder_text = "ip"
+
+[node name="joinGAme" type="Button" parent="SubViewportContainer/SubViewport/background/Panel/clientView/VFlowContainer"]
+layout_mode = 2
+text = "join game"
+
+[node name="Cancel" type="Button" parent="SubViewportContainer/SubViewport/background/Panel/clientView/VFlowContainer"]
+layout_mode = 2
+text = "Cancel"
+
+[node name="user" type="MarginContainer" parent="SubViewportContainer/SubViewport/background/Panel"]
+visible = false
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewportContainer/SubViewport/background/Panel/user"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SubViewportContainer/SubViewport/background/Panel/user/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="SubViewportContainer/SubViewport/background/Panel/user/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "name"
+
+[node name="playerName" type="LineEdit" parent="SubViewportContainer/SubViewport/background/Panel/user/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "p1"
+placeholder_text = "name"
+
+[node name="save" type="Button" parent="SubViewportContainer/SubViewport/background/Panel/user/VBoxContainer"]
+layout_mode = 2
+text = "Save"
+
+[node name="Cancel" type="Button" parent="SubViewportContainer/SubViewport/background/Panel/user/VBoxContainer"]
+layout_mode = 2
+text = "Cancel"
+
+[node name="ChatBox" parent="SubViewportContainer/SubViewport/background" instance=ExtResource("7_vyjft")]
+layout_mode = 1
+
+[node name="loading" type="PanelContainer" parent="SubViewportContainer/SubViewport/background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("7_om76q")
+
+[node name="loading" type="VBoxContainer" parent="SubViewportContainer/SubViewport/background/loading"]
+layout_mode = 2
+
+[node name="Loading" type="Label" parent="SubViewportContainer/SubViewport/background/loading/loading"]
+layout_mode = 2
+text = "Loading..."
+
+[node name="PlayerList" type="VBoxContainer" parent="SubViewportContainer/SubViewport/background/loading/loading"]
+layout_mode = 2
+
+[connection signal="button_down" from="SubViewportContainer/SubViewport/background/Panel/StartView/StartView/Server" to="MenuHandler" method="_on_server_button_down"]
+[connection signal="button_down" from="SubViewportContainer/SubViewport/background/Panel/StartView/StartView/Client" to="MenuHandler" method="toClientView"]
+[connection signal="button_down" from="SubViewportContainer/SubViewport/background/Panel/StartView/StartView/Button" to="MenuHandler" method="toUserView"]
+[connection signal="button_down" from="SubViewportContainer/SubViewport/background/Panel/ServerView/ServerView/HBoxContainer/Cancel" to="MenuHandler" method="onCancelServerView"]
+[connection signal="button_down" from="SubViewportContainer/SubViewport/background/Panel/clientView/VFlowContainer/joinGAme" to="MenuHandler" method="onjoinServerButton"]
+[connection signal="button_down" from="SubViewportContainer/SubViewport/background/Panel/clientView/VFlowContainer/Cancel" to="MenuHandler" method="_on_cancel_button_down"]
+[connection signal="button_down" from="SubViewportContainer/SubViewport/background/Panel/user/VBoxContainer/save" to="MenuHandler" method="_on_save_button_down"]
+[connection signal="button_down" from="SubViewportContainer/SubViewport/background/Panel/user/VBoxContainer/Cancel" to="MenuHandler" method="_on_cancel_button_down"]

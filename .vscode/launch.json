@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "GodotLaunch",
+        "type": "godot",
+        "request": "launch",
+        "project": "/home/tatis/Documents/godot/multp",
+        "port": 6005,
+        "address": "any://127.0.0.1",
+        "launch_game_instance": true,
+        "launch_scene": false,
+        "debugServer": 6006
+      }
+    ]
+  }
