@@ -8,7 +8,10 @@ signal player_disconnected(peer_id)
 signal server_disconnected
 signal server_created()
 signal server_joined()
-signal playerReady(peer_id)
+signal player_ready(peer_id,status:bool)#a player is ready
+signal player_loaded(peer_id)# a player loaded the main game
+signal all_players_loaded()#all players loaded
+signal all_players_ready()#all players are ready wating for server to start
 
 const PORT = 7000
 const DEFAULT_SERVER_IP = "127.0.0.1"  # IPv4 localhost
@@ -16,11 +19,24 @@ const MAX_CONNECTIONS = 4
 
 # This will contain player info for every player,
 # with the keys being each player's unique IDs.
+var playersReadyCount=0
 var players = {}
+class PlayersLoaded:
+	var loaded:=0
+	var loadedPlayers:Dictionary={}
+
+	func addPlayer(peer_id):
+		loaded =loaded+1
+		loadedPlayers[peer_id] = true
+
+	func removePlayer(peer_id):
+		loaded =loaded-1
+		loadedPlayers.erase(peer_id)
 
 
-var players_loaded = 0
-var netPlayerInfoRPC: Dictionary
+
+var players_loaded_current = PlayersLoaded.new()
+ 
 
 
 func _ready():
@@ -36,9 +52,18 @@ func setNewConnection(accept:bool):
 	multiplayer.multiplayer_peer.set_refuse_new_connections(not accept)
 ###SERVER CODE
 func create_game():
-	netPlayerInfoRPC = getPlayerNetworData()
+	var upnp = UPNP.new()
+
+	var disc= upnp.discover()
+	print('ip:',upnp.query_external_address())
+
+
+	
+
+	var netPlayerInfoRPC = getPlayerNetworData()
 	var peer = ENetMultiplayerPeer.new()
 	var error = peer.create_server(PORT, MAX_CONNECTIONS)
+	
 	if error:
 		return error
 	multiplayer.multiplayer_peer = peer
@@ -47,13 +72,18 @@ func create_game():
 	players[1] = _netPlayerInfo  #set 1 as a server/host id
 
 	player_connected.emit(1, _netPlayerInfo)
+	
 	server_created.emit()
+
 
 # When a peer connects, send them my player info.
 # This allows transfer of all desired data for each player, not only the unique ID.
 func _on_peer_connected(id):
 	#print('conected',id)
+	var netPlayerInfoRPC = getPlayerNetworData()
 	_register_player.rpc_id(id, netPlayerInfoRPC)
+	if multiplayer.is_server() and not id == 1:#sync data 
+		pass
 
 
 
@@ -64,7 +94,7 @@ func _on_peer_disconnected(id):
 
 ###CLIENTCODE
 func join_game(address = ""):
-	netPlayerInfoRPC = getPlayerNetworData()
+	var netPlayerInfoRPC = getPlayerNetworData()
 	if address.is_empty():
 		address = DEFAULT_SERVER_IP
 	var peer = ENetMultiplayerPeer.new()
@@ -76,33 +106,49 @@ func join_game(address = ""):
 
 func remove_multiplayer_peer():
 	multiplayer.multiplayer_peer = null
+
 @rpc("any_peer","call_local","reliable")
-func playerReady():
-	pass
+func setPlayerReadyRPC(status:bool):
+	var peer_id =multiplayer.get_remote_sender_id()
+	players[peer_id].ready=status
+	player_ready.emit(peer_id,status)
+	if multiplayer.is_server():
+		if status: 
+			playersReadyCount += 1 
+		else :
+			playersReadyCount-=1
 
-# When the server decides to start the game from a UI scene,
-# do Lobby.load_game.rpc(filepath)
-@rpc("authority","call_local", "reliable")
-func load_game(game_scene_path: PackedScene):
-	get_tree().change_scene_to_packed(game_scene_path)
-#	loadMainGame(game_scene_path)
+		if playersReadyCount == players.keys().size()-1:
+			all_players_ready.emit()#emited only to server
+	
+func setPlayerReady(status:bool):
+	setPlayerReadyRPC.rpc(status)
 
 
+
+
+ 
 # Every peer will call this when they have loaded the game scene.
 @rpc("any_peer", "call_local", "reliable")
-func player_loaded():
-	if multiplayer.is_server():
-		players_loaded += 1
-		if players_loaded == players.size():
-			$/root/Game.start_game()
-			players_loaded = 0
+func finish_loaded():
+	var peer_id = multiplayer.get_remote_sender_id()
+	assert(not peer_id==0)
+	print('per:',peer_id)
+	players_loaded_current.addPlayer(peer_id)
+	player_loaded.emit(peer_id)
 
+	if players_loaded_current.loaded == players.size():		
+		allPlayerLoaded.rpc_id(1)
+			
 
+func closeConnection():
+	multiplayer.multiplayer_peer.close()
 
 func addPlayer(peerId, playerInfoRPC):
 	var _netPlayerInfo = NetPlayerInfo.new(playerInfoRPC)
 	players[peerId] = _netPlayerInfo
 	player_connected.emit(peerId, _netPlayerInfo)
+	#call_deferred("setPlayerReady",
 
 @rpc("any_peer", "call_remote", "reliable")
 func _register_player(new_player_infoRPC):
@@ -113,10 +159,11 @@ func _register_player(new_player_infoRPC):
 		server_joined.emit()
 
 func _on_connected_ok():
-	#pass
+	var netPlayerInfoRPC = getPlayerNetworData()
+	getPlayerNetworData()
 	var peer_id = multiplayer.get_unique_id()
 	addPlayer(peer_id, netPlayerInfoRPC)
-	print(globalData.saveData.playerName, 'joined')
+
 	#server_joined.emit()
 
 
@@ -129,16 +176,28 @@ func _on_connected_fail():
 
 func server_disconnects():
 	multiplayer.multiplayer_peer = null
+
 	players.clear()
+	playersReadyCount=0
+	players_loaded_current=PlayersLoaded.new()
 	server_disconnected.emit()
 
 
-func loadMainGame(scene: PackedScene):
-	var loadedScene = load(scene.resource_path)
-	var scene_instance = loadedScene.instance()
-	scene_instance.set_name("level_1")
-	add_sibling(scene_instance)
+ 
+@rpc("any_peer","call_local","reliable")
+func allPlayerLoaded():
+	if multiplayer.is_server():
+		all_players_loaded.emit()
+
+
+
 
 func getPlayerNetworData():
 	var _name = globalData.saveData.playerName
-	return {"name": _name}
+	var _readyStatus =false
+	if multiplayer.has_multiplayer_peer():
+		var _id = multiplayer.get_unique_id()
+		if players.has(_id):
+			_readyStatus= players[_id].ready
+
+	return {"name": _name,"ready":_readyStatus}

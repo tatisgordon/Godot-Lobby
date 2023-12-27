@@ -9,34 +9,41 @@ const CONNECTED_TEXT_="%s Connected"
 @export var richText:RichTextLabel
 @export var minimuzeButton:Button
 @export var title:Label
+@export var tittlePanel:Panel
+@export var chatAnimationComp:ChatAnimationComponent
+
+var isCollapsed:bool
 
 func _ready():
+
 	inputText.text_submitted.connect(onTextSubmited)
 	minimuzeButton.disabled= true
 	append_chat_line_system("Hello world!")
 	minimuzeButton.toggled.connect(onMinimizeToggled)
 	onMinimizeToggled(false)
-	Lobby.server_created.connect(_on_peer_connected)
-	Lobby.server_joined.connect(_on_peer_connected)
+	Lobby.server_created.connect(onConnectedToServer)
+	Lobby.server_joined.connect(onConnectedToServer)
 	Lobby.server_disconnected.connect(server_disconnects)
 	Lobby.player_disconnected.connect(onPlayerDisconnected)
 	Lobby.player_connected.connect(onPlayerConnected)
+
 
 	
 	
 
 func onPlayerConnected(id,info:NetPlayerInfo):
 	sendTextSystem(CONNECTED_TEXT_ % info.name)
-func _on_peer_connected():
-
+func onConnectedToServer():
 	minimuzeButton.disabled=false
-
 	title.text = "Connected to: %s"% Lobby.players[1].name
-	#minimuzeButton.emit_signal("pressed")
+
 func onMinimizeToggled(status:bool):
 
 	inputText.visible = status
 	richText.visible= status
+	isCollapsed = not status
+	if status :
+		chatAnimationComp.playReset()
 	#var _toSize = CONTAINER_MAX_SIZE if status else CONTAINER_MIN_SIZE
 
 	#size.y = _toSize
@@ -54,8 +61,16 @@ func onTextSubmited(_string):
 	inputText.clear()
 	sendText.rpc(globalData.saveData.playerName,_string)
 
+func notification_message():
+	chatAnimationComp.playNotificationAnmiation()
+	#get_stylebox("panel").border_color=Color.ORANGE
+	#t.tween_property(titleContainer,"self_modulate",Color.ORANGE,1)
+	#self_modulate
 @rpc("any_peer","call_local","reliable")
 func sendText(user,_string):
+	if not multiplayer.get_remote_sender_id() == multiplayer.get_unique_id():
+		if isCollapsed:
+			notification_message()
 	append_chat_line_escaped(user,_string)
 
 @rpc("authority","call_local","reliable")
