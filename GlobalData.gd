@@ -7,7 +7,7 @@ signal onLoadData(data)
 var _instance_num := -1
 var _instance_socket: TCPServer 
 func _init():
-	super._init()
+	#super._init()
 	if OS.is_debug_build():
 		_instance_socket = TCPServer.new()
 		for n in range(0,4):

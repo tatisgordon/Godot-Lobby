@@ -3,7 +3,7 @@ var _resource:String
 var _callback:Callable
 var _thread:Thread
 func _init(resource:String,c:Callable):
-	super._init()
+	#super._init()
 	_resource= resource
 	_thread = Thread.new()
 	_callback = c
@@ -17,7 +17,7 @@ func loadAsync():
 func checkStatus():
 
 	seed(globalData.saveData.playerName.hash())
-	var r := randf_range(4,30)
+	var r := randf_range(1,4)
 	while true:
 		
 		OS.delay_msec(r*1000)

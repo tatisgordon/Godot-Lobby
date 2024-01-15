@@ -13,7 +13,7 @@ signal player_loaded(peer_id)# a player loaded the main game
 signal all_players_loaded()#all players loaded
 signal all_players_ready()#all players are ready wating for server to start
 
-const PORT = 7000
+const PORT = 8000
 const DEFAULT_SERVER_IP = "127.0.0.1"  # IPv4 localhost
 const MAX_CONNECTIONS = 4
 
@@ -52,17 +52,14 @@ func setNewConnection(accept:bool):
 	multiplayer.multiplayer_peer.set_refuse_new_connections(not accept)
 ###SERVER CODE
 func create_game():
-	var upnp = UPNP.new()
+	#var upnp = UPNP.new()
 
-	var disc= upnp.discover()
-	print('ip:',upnp.query_external_address())
-
-
-	
+	#var disc= upnp.discover()
+	#print('ip:',upnp.query_external_address())	
 
 	var netPlayerInfoRPC = getPlayerNetworData()
 	var peer = ENetMultiplayerPeer.new()
-	peer.get_packet_peer()
+	#peer.get_packet_peer()
 	var error = peer.create_server(PORT, MAX_CONNECTIONS)
 	
 	
@@ -100,7 +97,7 @@ func join_game(address = ""):
 	if address.is_empty():
 		address = DEFAULT_SERVER_IP
 	var peer = ENetMultiplayerPeer.new()
-	var error = peer.create_client(address, PORT)
+	var error = peer.create_client(address, PORT+1)
 	if error:
 		return error
 	multiplayer.multiplayer_peer = peer

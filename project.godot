@@ -11,8 +11,9 @@ config_version=5
 [application]
 
 config/name="multptest"
+config/tags=PackedStringArray("mine")
 run/main_scene="res://main.tscn"
-config/features=PackedStringArray("4.1", "Forward Plus")
+config/features=PackedStringArray("4.2", "Forward Plus")
 run/max_fps=60
 config/icon="res://icon.svg"
 
