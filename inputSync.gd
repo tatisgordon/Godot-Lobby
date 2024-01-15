@@ -9,10 +9,7 @@ func _input(event:InputEvent):
 	
 	if event is InputEventKey:
 		print('input',event.as_text_keycode())
-		#var str_l= 1 if event.get_action_strength('ui_left')else 0
-		#var str_r= 1 if event.is_action_pressed('ui_right') else 0
-		#var str_u= 1 if event.is_action_pressed('ui_up')else 0
-		#var str_d= 1 if event.is_action_pressed('ui_down')else 0
+ 
 		
 		var horizontal = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
 		var vertical = Input.get_action_strength("ui_up") - Input.get_action_strength("ui_down")
