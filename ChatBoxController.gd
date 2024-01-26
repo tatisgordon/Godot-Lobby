@@ -59,7 +59,7 @@ func onMinimizeToggled(status:bool):
 func onTextSubmited(_string):
 
 	inputText.clear()
-	sendText.rpc(globalData.saveData.playerName,_string)
+	sendText.rpc(networkPlayerData.getPlayerName(),_string)
 
 func notification_message():
 	chatAnimationComp.playNotificationAnmiation()

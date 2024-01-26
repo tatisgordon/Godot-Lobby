@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://5v310im2ii4b"]
 
-[ext_resource type="Script" path="res://GameStarter.gd" id="1_6khm4"]
-[ext_resource type="PackedScene" uid="uid://btkw8covx1fbt" path="res://player.tscn" id="2_kpkqt"]
+[ext_resource type="Script" path="res://Godot-Lobby/GameStarter.gd" id="1_6khm4"]
+[ext_resource type="PackedScene" uid="uid://btkw8covx1fbt" path="res://Godot-Lobby/player.tscn" id="2_kpkqt"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_wc5rr"]
 size = Vector2(1000, 1000)

@@ -5,6 +5,14 @@ signal inputUpdated(movement:Vector2,senderId:int)
 signal localInput(movement:Vector2)
 
 
+func _ready():
+	_state=INPUT_STATE.SEND_INPUT
+
+enum INPUT_STATE  {SEND_INPUT,NOT_SEND_INPUT}
+var _state:INPUT_STATE
+
+func setInputState(state:INPUT_STATE):
+	_state = state
 func _input(event:InputEvent):
 	
 	if event is InputEventKey:
@@ -16,6 +24,10 @@ func _input(event:InputEvent):
 
 
 		var _movement_input = PackedFloat32Array([horizontal,vertical])
+
+		if _state == INPUT_STATE.NOT_SEND_INPUT:
+			return
+
 		sendInputDate.rpc_id(1,_movement_input)
 		localInput.emit(actionToMov(_movement_input))
 
@@ -26,7 +38,6 @@ func sendInputDate(_movement:PackedFloat32Array):
 		var senderId = multiplayer.get_remote_sender_id()
 
 		var mov = actionToMov(_movement)
-		print('mov',mov)
 		inputUpdated.emit(mov,senderId)
 
 func actionToMov(_movement):

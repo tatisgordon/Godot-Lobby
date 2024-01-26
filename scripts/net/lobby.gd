@@ -192,7 +192,7 @@ func allPlayerLoaded():
 
 
 func getPlayerNetworData():
-	var _name = globalData.saveData.playerName
+	var _name = networkPlayerData.getPlayerName()
 	var _readyStatus =false
 	if multiplayer.has_multiplayer_peer():
 		var _id = multiplayer.get_unique_id()

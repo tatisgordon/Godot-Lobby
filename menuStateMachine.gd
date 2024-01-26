@@ -14,133 +14,150 @@ extends Node
 @export_file("*.tscn") var gameScene: String
 var aLoader: AsyncResourceLoader
 
-@onready var viewArray = [
- clientView
-, serverView
-, startView
-, userView
-, loadingPanel
-]
-
+@onready var viewArray = [clientView, serverView, startView, userView, loadingPanel]
 
 
 func _ready():
+	toStartView()
+	readyButton.toggled.connect(onReadyButton)
+	startGameButton.pressed.connect(OnStartGame)
+	Lobby.player_connected.connect(onPlayerConnected)
+	Lobby.all_players_loaded.connect(onAllPlayersLoaded)
+	Lobby.server_disconnected.connect(server_disconnects)
+	#Lobby.player_disconnected.connect(onPlayerDisconnected)
+	#globalData.onLoadData.connect(onloadDataa)
+	networkPlayerData.loadFetchData()
+	loadingPanel.visible = false
 
- toStartView()
- readyButton.toggled.connect(onReadyButton)
- startGameButton.pressed.connect(OnStartGame)
- Lobby.player_connected.connect(onPlayerConnected)
- Lobby.all_players_loaded.connect(onAllPlayersLoaded)
- Lobby.server_disconnected.connect(server_disconnects)
- #Lobby.player_disconnected.connect(onPlayerDisconnected)
- globalData.onLoadData.connect(onloadDataa)
- globalData.loadSave()
- loadingPanel.visible = false
- #print(ResourceLoader.has_cached(gameScene))
 
+#print(ResourceLoader.has_cached(gameScene))
 
 var _currentView: Container
+
+
 func transitToView(toView: Container):
- print('transit start')
- for view in viewArray:
-  view.visible = false
- if _currentView:
-  _currentView.visible = false
- _currentView = toView
- toView.visible = true
- print('transit finish')
+	print("transit start")
+	for view in viewArray:
+		view.visible = false
+	if _currentView:
+		_currentView.visible = false
+	_currentView = toView
+	toView.visible = true
+	print("transit finish")
 
 
 func _on_server_created(peer_id, player_info):
- toServerView()
-
+	toServerView()
 
 
 func toStartView():
- transitToView(startView)
+	transitToView(startView)
 
 
 func createServer():
+	Lobby.create_game()
+	toServerView()
 
- Lobby.create_game()
- toServerView()
+
 func toLoadingPanel():
- transitToView(loadingPanel)
+	transitToView(loadingPanel)
+
+
 func toServerView():
- transitToView(serverView)
- if multiplayer.is_server():
-  serverView.toServerMode()
- else:
-  serverView.toClientMode()
+	transitToView(serverView)
+	if multiplayer.is_server():
+		serverView.toServerMode()
+	else:
+		serverView.toClientMode()
+
+
 func toClientView():
- transitToView(clientView)
+	transitToView(clientView)
+
+
 func toUserView():
- nameInput.text = globalData.saveData.playerName
- transitToView(userView)
+	nameInput.text = networkPlayerData.getPlayerName()
+	transitToView(userView)
+
 
 func onPlayerConnected(peerId, playerInfo: NetPlayerInfo):
- serverView.addUserConnected(peerId, playerInfo)
+	serverView.addUserConnected(peerId, playerInfo)
+
 
 func onjoinServerButton():
- Lobby.join_game(targetIpLabel.text)
- toServerView()
+	Lobby.join_game(targetIpLabel.text)
+	toServerView()
+
 
 func saveData():
- var save: SaveData = globalData.saveData
- assert(save)
- save.playerName = nameInput.text
- globalData.SetsaveData(save)
+	pass
+	#var save: SaveData = globalData.saveData
+	#assert(save)
+	#save.playerName = nameInput.text
+	#globalData.SetsaveData(save)
+
 
 func onloadDataa(save):
- nameInput.text = save.playerName
+	nameInput.text = save.playerName
+
 
 func _on_save_button_down():
- saveData()
- toStartView()
+	saveData()
+	toStartView()
+
 
 func onPlayerDisconnected(id):
- serverView.removeUserConnected(id)
+	serverView.removeUserConnected(id)
+
 
 func onCancelServerView():
- Lobby.closeConnection()
- toStartView()
+	Lobby.closeConnection()
+	toStartView()
+
 
 func _on_cancel_button_down():
- toStartView()
+	toStartView()
+
 
 func server_disconnects():
- #Lobby.server_disconnects()
- serverView.removeAllusers()
- toStartView()
+	#Lobby.server_disconnects()
+	serverView.removeAllusers()
+	toStartView()
+
 
 func _on_server_button_down():
- createServer()
+	createServer()
+
+
 func OnStartGame():
- if multiplayer.is_server():
-  Lobby.setNewConnection(false)
-  toLoad.rpc()
+	if multiplayer.is_server():
+		Lobby.setNewConnection(false)
+		toLoad.rpc()
+
 
 func onReadyButton(state: bool):
- Lobby.setPlayerReady(state)
+	Lobby.setPlayerReady(state)
 
 
 @rpc("authority", "call_local", "reliable")
 func toLoad():
- toLoadingPanel()
- aLoader = AsyncResourceLoader.new(gameScene, onLoadDone)
- aLoader.loadAsync()
+	toLoadingPanel()
+	aLoader = AsyncResourceLoader.new(gameScene, onLoadDone)
+	aLoader.loadAsync()
+
+
 @rpc("authority", "call_local", "reliable")
 func toGame():
+	get_tree().change_scene_to_file(gameScene)
 
- get_tree().change_scene_to_file(gameScene)
 
 func onAllPlayersLoaded():
+	if multiplayer.is_server():
+		await get_tree().create_timer(1).timeout
+		toGame.rpc()
 
- if multiplayer.is_server():
-  await get_tree().create_timer(1).timeout
-  toGame.rpc()
 
 func onLoadDone(err, r):
- assert(err == false)
- Lobby.finish_loaded.rpc()
- #aLoader.call_deferred("free")
+	assert(err == false)
+	Lobby.finish_loaded.rpc()
+#aLoader.call_deferred("free")

@@ -1,14 +1,45 @@
-[gd_scene load_steps=6 format=3 uid="uid://btkw8covx1fbt"]
+[gd_scene load_steps=12 format=3 uid="uid://btkw8covx1fbt"]
 
-[ext_resource type="Texture2D" uid="uid://c6finu2i4sjcw" path="res://icon.svg" id="1_w177h"]
-[ext_resource type="Script" path="res://playerInput.gd" id="2_8qkee"]
-[ext_resource type="Script" path="res://inputSync.gd" id="3_ll1hs"]
-[ext_resource type="Script" path="res://PlayerSyncronizer.gd" id="3_y3ymi"]
+[ext_resource type="Texture2D" uid="uid://c6finu2i4sjcw" path="res://Godot-Lobby/icon.svg" id="1_w177h"]
+[ext_resource type="Script" path="res://Godot-Lobby/playerInput.gd" id="2_8qkee"]
+[ext_resource type="Script" path="res://Godot-Lobby/inputSync.gd" id="3_ll1hs"]
+[ext_resource type="Script" path="res://Godot-Lobby/PlayerSyncronizer.gd" id="3_ylg2g"]
+[ext_resource type="Script" path="res://addons/syncinteropolated/PropertyData.gd" id="4_jnhop"]
+[ext_resource type="Script" path="res://addons/syncinteropolated/DataCollection.gd" id="4_rvvex"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_00mxl"]
 properties/0/path = NodePath("PlayerSyncBuffer:remote_pos")
 properties/0/spawn = true
 properties/0/replication_mode = 1
+properties/1/path = NodePath(".:speed")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("PlayerSyncBuffer2:delta_interval")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+
+[sub_resource type="Resource" id="Resource_tvbod"]
+script = ExtResource("4_jnhop")
+smothType = 1
+bufferSize = 3
+
+[sub_resource type="Resource" id="Resource_ddta1"]
+script = ExtResource("4_jnhop")
+smothType = 1
+bufferSize = 3
+
+[sub_resource type="Resource" id="Resource_jcwlb"]
+script = ExtResource("4_jnhop")
+smothType = 0
+bufferSize = 3
+
+[sub_resource type="Resource" id="Resource_oyjif"]
+script = ExtResource("4_rvvex")
+data = {
+".speed": SubResource("Resource_ddta1"),
+"PlayerSyncBuffer2delta_interval": SubResource("Resource_jcwlb"),
+"PlayerSyncBufferremote_pos": SubResource("Resource_tvbod")
+}
 
 [node name="player" type="Sprite2D"]
 position = Vector2(269, 136)
@@ -16,14 +47,14 @@ texture = ExtResource("1_w177h")
 script = ExtResource("2_8qkee")
 speed = null
 
-[node name="inputSync" type="Node" parent="."]
-script = ExtResource("3_ll1hs")
-
-[node name="PlayerSyncBuffer" type="MultiplayerSynchronizer" parent="." node_paths=PackedStringArray("player")]
+[node name="PlayerSyncBuffer2" type="MultiplayerSynchronizer" parent="."]
 replication_interval = 0.04
 replication_config = SubResource("SceneReplicationConfig_00mxl")
-script = ExtResource("3_y3ymi")
-player = NodePath("..")
+script = ExtResource("3_ylg2g")
+propertyData = SubResource("Resource_oyjif")
+
+[node name="inputSync" type="Node" parent="."]
+script = ExtResource("3_ll1hs")
 
 [connection signal="inputUpdated" from="inputSync" to="." method="incomingInput"]
 [connection signal="localInput" from="inputSync" to="." method="localInput"]

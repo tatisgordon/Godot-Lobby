@@ -16,7 +16,7 @@ func loadAsync():
 	_thread.start(checkStatus)
 func checkStatus():
 
-	seed(globalData.saveData.playerName.hash())
+	seed(networkPlayerData.playerName.hash())
 	var r := randf_range(1,4)
 	while true:
 		

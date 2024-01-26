@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://chc4cs4wd112k"]
 
-[ext_resource type="Script" path="res://controlPrefabs/userConnectionLabel.gd" id="1_xa0tk"]
+[ext_resource type="Script" path="res://Godot-Lobby/controlPrefabs/userConnectionLabel.gd" id="1_xa0tk"]
 
 [sub_resource type="Gradient" id="Gradient_m7oy6"]
 offsets = PackedFloat32Array(0, 0.0911765, 1)
