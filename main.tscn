@@ -23,7 +23,7 @@ mainMenuPanel = NodePath("../SubViewportContainer/SubViewport/background")
 targetIpLabel = NodePath("../SubViewportContainer/SubViewport/background/Panel/clientView/VFlowContainer/HFlowContainer/LineEdit")
 readyButton = NodePath("../SubViewportContainer/SubViewport/background/Panel/ServerView/ServerView/HBoxContainer/Ready")
 startGameButton = NodePath("../SubViewportContainer/SubViewport/background/Panel/ServerView/ServerView/HBoxContainer/StartGame")
-gameScene = "res://game.tscn"
+gameScene = "res://Godot-Lobby/game.tscn"
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
 offset_right = 600.0

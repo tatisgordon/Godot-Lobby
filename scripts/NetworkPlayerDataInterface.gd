@@ -1,5 +1,4 @@
-extends  Node
-#Abstrac class must be Extended
+extends RefCounted
 class_name NetworkPlayerDataInterface
 
 var playerName:String
@@ -8,5 +7,5 @@ var data:Dictionary={}
 func _init():
 	pass
 #overload to return true
-func loadPlayerNetWorkData():
+func loadPlayerNetWorkData()->bool:
 	return false

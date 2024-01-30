@@ -16,7 +16,7 @@ func setInputState(state:INPUT_STATE):
 func _input(event:InputEvent):
 	
 	if event is InputEventKey:
-		print('input',event.as_text_keycode())
+		#print('input',event.as_text_keycode())
  
 		
 		var horizontal = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")

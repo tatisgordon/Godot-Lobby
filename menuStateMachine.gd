@@ -24,8 +24,7 @@ func _ready():
 	Lobby.player_connected.connect(onPlayerConnected)
 	Lobby.all_players_loaded.connect(onAllPlayersLoaded)
 	Lobby.server_disconnected.connect(server_disconnects)
-	#Lobby.player_disconnected.connect(onPlayerDisconnected)
-	#globalData.onLoadData.connect(onloadDataa)
+	networkPlayerData.setDataFetcher(NetworkPlayerDataConcrete.new())
 	networkPlayerData.loadFetchData()
 	loadingPanel.visible = false
 
@@ -90,11 +89,9 @@ func onjoinServerButton():
 
 
 func saveData():
-	pass
-	#var save: SaveData = globalData.saveData
-	#assert(save)
-	#save.playerName = nameInput.text
-	#globalData.SetsaveData(save)
+	saveDataManager.saveData.playerName = nameInput.text
+	saveDataManager.SetsaveData(saveDataManager.saveData)
+
 
 
 func onloadDataa(save):
@@ -153,7 +150,7 @@ func toGame():
 
 func onAllPlayersLoaded():
 	if multiplayer.is_server():
-		await get_tree().create_timer(1).timeout
+		await get_tree().create_timer(3).timeout
 		toGame.rpc()
 
 
