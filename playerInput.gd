@@ -15,13 +15,11 @@ func _ready():
 		syncBuffer.updatedData.connect(onUpdatePositionNetworkPosition)
 
 
-func onUpdatePositionNetworkPosition(netWPosition: Vector2):
-		#position = netWPosition
-		var dis =  position.distance_to(netWPosition)
-		print ('dis>>',dis)
-		
-		#if Vector2 networkPlayerData.dis
-		pass
+func onUpdatePositionNetworkPosition(netWPosition: Vector2, lerpDelta):
+	#position = netWPosition
+	var dis = position.distance_to(netWPosition)
+	if dis > 300:
+		position = lerp(position, netWPosition, lerpDelta)
 
 
 #local autority code
@@ -29,7 +27,6 @@ func _process(delta):
 	position += _movementInput * speed
 	if multiplayer.is_server():
 		syncBuffer.setVector(position)
-	
 
 
 #server input processing
@@ -40,10 +37,9 @@ func incomingInput(movement, senderId):
 
 func localInput(_movement: Vector2):
 	if name == str(multiplayer.get_unique_id()) and not multiplayer.is_server():
-		print('local',name)
-		_movementInput= _movement
+		print("local", name)
+		_movementInput = _movement
 		#position=Vector2.ZERO
-
 
 
 func setColor(c: Color):

@@ -1,6 +1,6 @@
 extends MultiplayerSynchronizer
 class_name PlayerSyncBufferVector2
-signal updatedData(remoteVector: Vector2)
+signal updatedData(remoteVector: Vector2,lerpDelta:float)
 @export var remoteVector: Vector2  #synced variable
 var _buffer: Array[BufferData] = []
 
@@ -38,7 +38,8 @@ func _physics_process(delta):
 			var lerptime = float(timeSinceLastUpdate) / float(aproxTimeGoalTime)
 
 			remoteVector = lerp(data0.data, data1.data, lerptime)
-			updatedData.emit(remoteVector)
+			print(data0.data,',',data1.data)
+			updatedData.emit(remoteVector,lerptime)
 
 
 func _sync():

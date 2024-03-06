@@ -1,23 +1,19 @@
 extends Node
-class_name GameWorldMultiplayer
- 
-@export var playerScene:PackedScene
-@export var spawnRoot:Node2D
-@export var multplayerSync:MultiplayerSynchronizer
+class_name GameWorldMultiplayerStarter
+
+@export var playerScene: PackedScene
+@export var spawnRoot: Node2D
+
+
+
 func _ready():
+	for players_key in Lobby.players.keys():
+		var playerInfo: NetPlayerInfo = Lobby.players[players_key]
+		var player = playerScene.instantiate()
 
-		for players_key in  Lobby.players.keys():
-			var playerInfo:NetPlayerInfo = Lobby.players[players_key]
-			var player = playerScene.instantiate()
-		
-			player.name = str(players_key)
-		#	player.set_multiplayer_authority(players_key)
-		#multplayerSync.add_visibility_filter(
-		
-			spawnRoot.add_child(player)
-		
+		player.name = str(players_key)
 
-
+		spawnRoot.add_child(player)
 
 
 # Called only on the server.
