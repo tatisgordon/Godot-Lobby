@@ -3,7 +3,7 @@ class_name MultiplayerAvatar
 enum AVATAR_TYPE { LOCAL_AVATAR, REMOTE_AVATAR, SERVER_AVATAR }
 
 @export var clientPrediction := false
-@export var localAvatar: CharacterBody2D
+@export var localAvatar: CharBodyGame
 @export var labelName: Label
 @export var animationSync: AnimationSync
 @onready var key = multiplayer.get_unique_id()
