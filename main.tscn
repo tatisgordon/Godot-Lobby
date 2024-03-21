@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bffcsrwff5lkq"]
+[gd_scene load_steps=8 format=3 uid="uid://celkgpqrc4k2h"]
 
 [ext_resource type="Theme" uid="uid://djlxpv3i2vrbh" path="res://Godot-Lobby/MinimalUI/MinimalUI.tres" id="2_dllhr"]
 [ext_resource type="Script" path="res://Godot-Lobby/menuStateMachine.gd" id="2_m7pk7"]
@@ -164,6 +164,7 @@ text = "Cancel"
 layout_mode = 1
 
 [node name="loading" type="PanelContainer" parent="SubViewportContainer/SubViewport/background"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

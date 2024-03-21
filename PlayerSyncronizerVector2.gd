@@ -3,12 +3,14 @@ class_name PlayerSyncBufferVector2
 signal updatedData(remoteVector: Vector2)
 @export var remoteVector: Vector2  #synced variable
 var _buffer: Array[BufferData] = []
+var useBuffer :=false
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	synchronized.connect(_sync)
 	set_physics_process(true)
+	#useBuffer=multiplayer.is
 	#replication_config.property_list_changed
 
 
@@ -17,14 +19,15 @@ func setVector(v: Vector2):
 		remoteVector = v
 
 
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
+	if not useBuffer:
+		return
 	if multiplayer.is_server():
-		pass
+		pass#return
 
 		#player.position = lerp(bufferedPos,lastPos,0.5)
-	if not multiplayer.is_server():
+	else:
 		if _buffer.size() >= 2:
 			var time = Time.get_ticks_msec() - 100
 			while _buffer.size() > 2 and time > _buffer[1].timeStamp:
@@ -37,15 +40,17 @@ func _physics_process(delta):
 
 			var lerptime = float(timeSinceLastUpdate) / float(aproxTimeGoalTime)
 
-			remoteVector = lerp(data0.data, data1.data, lerptime)
-			updatedData.emit(remoteVector)
+			var bufferedRemoteVector = lerp(data0.data, data1.data, lerptime)
+			updatedData.emit(bufferedRemoteVector)
 
 
 func _sync():
 	var rtt = multiplayer.multiplayer_peer.get_peer(1).get_statistic(
 		ENetPacketPeer.PEER_ROUND_TRIP_TIME
 	)
-
+	if not useBuffer:
+		updatedData.emit(remoteVector)
+		return
 	var data = BufferData.new(remoteVector, Time.get_ticks_msec())
 	_buffer.append(data)
 

@@ -1,50 +1,59 @@
-extends Sprite2D
-class_name TestPlayer
-@export var speed: float = 10
+extends Node
+class_name MultiplayerAvatar
+enum AVATAR_TYPE { LOCAL_AVATAR, REMOTE_AVATAR, SERVER_AVATAR }
+
+@export var clientPrediction := false
+@export var localAvatar: CharacterBody2D
+@export var labelName: Label
+@export var animationSync: AnimationSync
 @onready var key = multiplayer.get_unique_id()
-var _movementInput: Vector2
-@onready var syncBuffer: PlayerSyncBufferVector2 = $PlayerSyncBuffer2
+
+@export var nodesToRemoveFromRemoteAvatar: Array[Node]
+
+@export var syncBuffer: PlayerSyncBufferVector2
+var avatarType: AVATAR_TYPE
+ 
+
+func removeRemoteNodes():
+	for x in nodesToRemoveFromRemoteAvatar:
+		x.queue_free()
+
+
+func setLabelName(_str):
+	labelName.text = _str
+	if avatarType == AVATAR_TYPE.LOCAL_AVATAR:
+		labelName.modulate = Color.RED
+
+
+func setAvatarType(isLocal, isServer: bool):
+	var _result: AVATAR_TYPE
+	if isLocal:
+		_result = AVATAR_TYPE.LOCAL_AVATAR
+	else:
+		_result = AVATAR_TYPE.REMOTE_AVATAR
+		syncBuffer.useBuffer = true
+
+		avatarType = _result
+		if not isServer and avatarType== AVATAR_TYPE.REMOTE_AVATAR:
+			animationSync.removeAnimationTracks()
+			removeRemoteNodes()
 
 
 func _ready():
-	if name == str(1):
-		modulate = Color.RED
-	else:
-		modulate = Color.YELLOW
+	assert(animationSync)
 	if not multiplayer.is_server():
 		syncBuffer.updatedData.connect(onUpdatePositionNetworkPosition)
 
 
 func onUpdatePositionNetworkPosition(netWPosition: Vector2):
-		#position = netWPosition
-		var dis =  position.distance_to(netWPosition)
-		print ('dis>>',dis)
-		
-		#if Vector2 networkPlayerData.dis
-		pass
+	var dis = localAvatar.position.distance_to(netWPosition)
+	if avatarType == AVATAR_TYPE.LOCAL_AVATAR and dis > 10:
+		localAvatar.position = netWPosition
+	if avatarType == AVATAR_TYPE.REMOTE_AVATAR:
+		localAvatar.position = netWPosition
 
 
 #local autority code
 func _process(delta):
-	position += _movementInput * speed
 	if multiplayer.is_server():
-		syncBuffer.setVector(position)
-	
-
-
-#server input processing
-func incomingInput(movement, senderId):
-	if name == str(senderId):
-		_movementInput = movement
-
-
-func localInput(_movement: Vector2):
-	if name == str(multiplayer.get_unique_id()) and not multiplayer.is_server():
-		print('local',name)
-		_movementInput= _movement
-		#position=Vector2.ZERO
-
-
-
-func setColor(c: Color):
-	modulate = c
+		syncBuffer.setVector(localAvatar.position)

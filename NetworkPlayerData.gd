@@ -1,10 +1,6 @@
+#autoload
 extends Node
 class_name NetworkPlayerData
-
- 
-func _ready():
-	pass  #	assert(dataFetcher)
-
 
 func setDataFetcher(_d: NetworkPlayerDataInterface):
 	_dataFetcher = _d

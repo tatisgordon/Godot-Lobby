@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://btkw8covx1fbt"]
+[gd_scene load_steps=6 format=3 uid="uid://bx0tw0efb2g5g"]
 
 [ext_resource type="Texture2D" uid="uid://c6finu2i4sjcw" path="res://Godot-Lobby/icon.svg" id="1_w177h"]
 [ext_resource type="Script" path="res://Godot-Lobby/playerInput.gd" id="2_8qkee"]

@@ -18,6 +18,7 @@ var aLoader: AsyncResourceLoader
 
 
 func _ready():
+
 	toStartView()
 	readyButton.toggled.connect(onReadyButton)
 	startGameButton.pressed.connect(OnStartGame)
@@ -35,7 +36,7 @@ var _currentView: Container
 
 
 func transitToView(toView: Container):
-	print("transit start")
+	print("transit start",toView.name)
 	for view in viewArray:
 		view.visible = false
 	if _currentView:
