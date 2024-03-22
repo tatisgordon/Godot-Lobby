@@ -14,7 +14,7 @@ func _init():
 				_instance_num = n
 				break
 	var y = 0 if _instance_num % 2 == 0 else 600
-	DisplayServer.window_set_size(Vector2i(600, 600))
+	#DisplayServer.window_set_size(Vector2i(600, 600))
 #	DisplayServer.window_set_position(Vector2i(600 * _instance_num, y),DisplayServer.MAIN_WINDOW_ID)
 	
 	#Window.position=Vector2i(600 * _instance_num, y)

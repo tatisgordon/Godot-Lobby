@@ -47,9 +47,11 @@ func _ready():
 
 func onUpdatePositionNetworkPosition(netWPosition: Vector2):
 	var dis = localAvatar.position.distance_to(netWPosition)
+	
 	if avatarType == AVATAR_TYPE.LOCAL_AVATAR and dis > 10:
 		localAvatar.position = netWPosition
 	if avatarType == AVATAR_TYPE.REMOTE_AVATAR:
+		print(netWPosition)
 		localAvatar.position = netWPosition
 
 

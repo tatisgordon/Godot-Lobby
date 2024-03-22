@@ -4,6 +4,7 @@ signal updatedData(remoteVector: Vector2)
 @export var remoteVector: Vector2  #synced variable
 var _buffer: Array[BufferData] = []
 var useBuffer :=false
+const EXPECTED_LATENCY=300 #const the higher the lag increase but its more stable
 
 
 # Called when the node enters the scene tree for the first time.
@@ -29,7 +30,7 @@ func _physics_process(delta):
 		#player.position = lerp(bufferedPos,lastPos,0.5)
 	else:
 		if _buffer.size() >= 2:
-			var time = Time.get_ticks_msec() - 100
+			var time = Time.get_ticks_msec() - EXPECTED_LATENCY#
 			while _buffer.size() > 2 and time > _buffer[1].timeStamp:
 				_buffer.remove_at(0)
 			var data0 = _buffer[0]
