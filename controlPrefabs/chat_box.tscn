@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://bhs0xd4r01jrb"]
 
-[ext_resource type="Script" path="res://ChatBoxController.gd" id="1_g6ufe"]
-[ext_resource type="Script" path="res://controlPrefabs/ChatAnimationsComponent.gd" id="2_2e0sf"]
+[ext_resource type="Script" path="res://Godot-Lobby/ChatBoxController.gd" id="1_g6ufe"]
+[ext_resource type="Script" path="res://Godot-Lobby/controlPrefabs/ChatAnimationsComponent.gd" id="2_2e0sf"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2snpa"]
 bg_color = Color(0.55, 0.517, 0.517, 0.980392)

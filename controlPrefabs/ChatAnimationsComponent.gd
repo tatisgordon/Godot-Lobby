@@ -9,7 +9,7 @@ func _ready():
 	animationPlayer.animation_finished.connect(onAnimationFinish)
 func onAnimationFinish(anim_name):
 	if not anim_name  =='RESET':
-		pass #animationPlayer.play('RESET')
+		pass
 func playNotificationAnmiation():
 	if not animationPlayer.is_playing():
 		animationPlayer.play('notification_message',-1,2)

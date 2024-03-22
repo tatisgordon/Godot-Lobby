@@ -1,12 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://bffcsrwff5lkq"]
+[gd_scene load_steps=8 format=3 uid="uid://celkgpqrc4k2h"]
 
-[ext_resource type="Theme" uid="uid://djlxpv3i2vrbh" path="res://MinimalUI/MinimalUI.tres" id="2_dllhr"]
-[ext_resource type="Script" path="res://menuStateMachine.gd" id="2_m7pk7"]
-[ext_resource type="StyleBox" uid="uid://b30uymi7ivhyx" path="res://themes/panleFlatStyle.tres" id="4_wpqow"]
-[ext_resource type="PackedScene" uid="uid://chc4cs4wd112k" path="res://controlPrefabs/conectedUserItem.tscn" id="6_ej5a8"]
-[ext_resource type="Script" path="res://ServerViewController.gd" id="6_ml0pv"]
-[ext_resource type="Script" path="res://loadingPanel.gd" id="7_om76q"]
-[ext_resource type="PackedScene" uid="uid://bhs0xd4r01jrb" path="res://controlPrefabs/chat_box.tscn" id="7_vyjft"]
+[ext_resource type="Theme" uid="uid://djlxpv3i2vrbh" path="res://Godot-Lobby/MinimalUI/MinimalUI.tres" id="2_dllhr"]
+[ext_resource type="Script" path="res://Godot-Lobby/menuStateMachine.gd" id="2_m7pk7"]
+[ext_resource type="StyleBox" uid="uid://b30uymi7ivhyx" path="res://Godot-Lobby/themes/panleFlatStyle.tres" id="4_wpqow"]
+[ext_resource type="PackedScene" uid="uid://chc4cs4wd112k" path="res://Godot-Lobby/controlPrefabs/conectedUserItem.tscn" id="6_ej5a8"]
+[ext_resource type="Script" path="res://Godot-Lobby/ServerViewController.gd" id="6_ml0pv"]
+[ext_resource type="Script" path="res://Godot-Lobby/loadingPanel.gd" id="7_om76q"]
+[ext_resource type="PackedScene" uid="uid://bhs0xd4r01jrb" path="res://Godot-Lobby/controlPrefabs/chat_box.tscn" id="7_vyjft"]
 
 [node name="Node2D" type="Node2D"]
 metadata/_edit_vertical_guides_ = [-96.0]
@@ -23,7 +23,7 @@ mainMenuPanel = NodePath("../SubViewportContainer/SubViewport/background")
 targetIpLabel = NodePath("../SubViewportContainer/SubViewport/background/Panel/clientView/VFlowContainer/HFlowContainer/LineEdit")
 readyButton = NodePath("../SubViewportContainer/SubViewport/background/Panel/ServerView/ServerView/HBoxContainer/Ready")
 startGameButton = NodePath("../SubViewportContainer/SubViewport/background/Panel/ServerView/ServerView/HBoxContainer/StartGame")
-gameScene = "res://game.tscn"
+gameScene = "res://Godot-Lobby/game.tscn"
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
 offset_right = 600.0
@@ -164,6 +164,7 @@ text = "Cancel"
 layout_mode = 1
 
 [node name="loading" type="PanelContainer" parent="SubViewportContainer/SubViewport/background"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

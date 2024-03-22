@@ -3,7 +3,7 @@ var _resource:String
 var _callback:Callable
 var _thread:Thread
 func _init(resource:String,c:Callable):
-	super._init()
+	#super._init()
 	_resource= resource
 	_thread = Thread.new()
 	_callback = c
@@ -11,16 +11,17 @@ func _init(resource:String,c:Callable):
 	
 	
 func loadAsync():
+	assert( ResourceLoader.exists(_resource),'resource not found')
 	ResourceLoader.load_threaded_request(_resource)
 
 	_thread.start(checkStatus)
 func checkStatus():
 
-	seed(globalData.saveData.playerName.hash())
-	var r := randf_range(4,30)
+	seed(networkPlayerData.getPlayerName().hash())
+	var r := randf_range(1,4)
 	while true:
 		
-		OS.delay_msec(r*1000)
+		#OS.delay_msec(r*1000)
 		var res = ResourceLoader.load_threaded_get_status(_resource)
 		#var failed = true if ThreadLoadStatus.THREAD_LOAD_FAILED or ThreadLoadStatus.THREAD_LOAD_FAILED else false
 		match res :
