@@ -8,6 +8,8 @@ enum AVATAR_TYPE { LOCAL_AVATAR, REMOTE_AVATAR, SERVER_AVATAR }
 @export var animationSync: AnimationSync
 @onready var key = multiplayer.get_unique_id()
 
+signal avatarReady(m:MultiplayerAvatar)
+
 @export var nodesToRemoveFromRemoteAvatar: Array[Node]
 
 @export var syncBuffer: PlayerSyncBufferVector2

@@ -3,7 +3,7 @@ class_name GameWorldMultiplayer  #this is concrete but should be generic
 
 @export var playerScene: PackedScene
 @export var spawnRoot: Node2D
-@export var multplayerSync: MultiplayerSynchronizer
+signal avatarSpawned(hero:MultiplayerAvatar)
 @export var positions: Array[Node2D]
 
 
@@ -22,6 +22,7 @@ func _ready():
 		multiplayerAvatar.name = str(players_key)
 		multiplayerAvatar.setLabelName(playerInfo.name + str(playerInfo.playerNumber))
 		spawnRoot.add_child(player)
+		avatarSpawned.emit(multiplayerAvatar)
 		i += 1
 
 

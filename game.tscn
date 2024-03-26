@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://cbmklec7jpvu0"]
+[gd_scene load_steps=5 format=3 uid="uid://c0sc7vtuyumyt"]
 
 [ext_resource type="Script" path="res://Godot-Lobby/GameStarter.gd" id="1_6khm4"]
 [ext_resource type="PackedScene" uid="uid://m5y3rc83cvvt" path="res://player/Multiplayer/multiplayer.tscn" id="2_n2a84"]
