@@ -13,8 +13,8 @@ func _init(resource:String,c:Callable):
 func loadAsync():
 	assert( ResourceLoader.exists(_resource),'resource not found')
 	ResourceLoader.load_threaded_request(_resource)
-
 	_thread.start(checkStatus)
+
 func checkStatus():
 
 	seed(networkPlayerData.getPlayerName().hash())

@@ -18,7 +18,7 @@ var aLoader: AsyncResourceLoader
 
 
 func _ready():
-	toStartView()
+	
 	readyButton.toggled.connect(onReadyButton)
 	startGameButton.pressed.connect(OnStartGame)
 	Lobby.player_connected.connect(onPlayerConnected)
@@ -27,8 +27,8 @@ func _ready():
 	networkPlayerData.setDataFetcher(NetworkPlayerDataConcrete.new())
 	networkPlayerData.loadFetchData()
 	loadingPanel.visible = false
-
-
+	toStartView()
+	
 #print(ResourceLoader.has_cached(gameScene))
 
 var _currentView: Container

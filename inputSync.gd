@@ -24,9 +24,9 @@ func _input(event: InputEvent):
 	
 	if event is InputEventKey:
 		var horizontal = (
-			Input.get_action_strength("x_axis_n") - Input.get_action_strength("x_axis_p")
+			Input.get_action_strength("ui_left") - Input.get_action_strength("ui_right")
 		)
-		var vertical = Input.get_action_strength("y_axis_n") - Input.get_action_strength("y_axis_p")
+		var vertical = Input.get_action_strength("ui_up") - Input.get_action_strength("ui_down")
 
 		var _movement_input = PackedFloat32Array([horizontal, vertical])
 		var actions = PackedByteArray([

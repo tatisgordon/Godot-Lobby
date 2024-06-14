@@ -1,9 +1,9 @@
 [gd_scene load_steps=6 format=3 uid="uid://btkw8covx1fbt"]
 
-[ext_resource type="Texture2D" uid="uid://c6finu2i4sjcw" path="res://Godot-Lobby/icon.svg" id="1_w177h"]
-[ext_resource type="Script" path="res://Godot-Lobby/playerInput.gd" id="2_8qkee"]
-[ext_resource type="Script" path="res://Godot-Lobby/PlayerSyncronizerVector2.gd" id="3_k70s3"]
-[ext_resource type="Script" path="res://Godot-Lobby/inputSync.gd" id="3_ll1hs"]
+[ext_resource type="Texture2D" uid="uid://c6finu2i4sjcw" path="res://icon.svg" id="1_w177h"]
+[ext_resource type="Script" path="res://playerInput.gd" id="2_8qkee"]
+[ext_resource type="Script" path="res://PlayerSyncronizerVector2.gd" id="3_k70s3"]
+[ext_resource type="Script" path="res://inputSync.gd" id="3_ll1hs"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_00mxl"]
 properties/0/path = NodePath("PlayerSyncBuffer2:remoteVector")
