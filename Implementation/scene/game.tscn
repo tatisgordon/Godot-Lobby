@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://5v310im2ii4b"]
+
+[ext_resource type="Script" path="res://Lobby/GameStarter.gd" id="1_w6bqm"]
+[ext_resource type="PackedScene" uid="uid://btkw8covx1fbt" path="res://Implementation/player.tscn" id="2_raksp"]
+
+[node name="Game" type="Node2D" node_paths=PackedStringArray("spawnRoot")]
+script = ExtResource("1_w6bqm")
+playerScene = ExtResource("2_raksp")
+spawnRoot = NodePath("SpawnPlayers")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+spawn_path = NodePath("../SpawnPlayers")
+
+[node name="SpawnPlayers" type="Node2D" parent="."]

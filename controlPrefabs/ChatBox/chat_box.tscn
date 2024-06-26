@@ -1,0 +1,175 @@
+[gd_scene load_steps=19 format=3 uid="uid://bhs0xd4r01jrb"]
+
+[ext_resource type="Theme" uid="uid://bqrp03hh3ujer" path="res://themes/new_theme.tres" id="1_8wnd0"]
+[ext_resource type="Script" path="res://controlPrefabs/ChatBox/ChatBoxController.gd" id="1_g6ufe"]
+[ext_resource type="Script" path="res://controlPrefabs/ChatBox/ChatAnimationsComponent.gd" id="2_2e0sf"]
+[ext_resource type="Texture2D" uid="uid://bmbivnf4j323" path="res://themes/kenney_ui-pack/PNG/Grey/Double/button_rectangle_gloss.png" id="2_yugky"]
+[ext_resource type="Texture2D" uid="uid://bpwo06n4mt4y4" path="res://themes/kenney_ui-pack/PNG/Green/Default/arrow_basic_n.png" id="4_bqv1r"]
+[ext_resource type="Texture2D" uid="uid://jjlufjk6y71c" path="res://themes/kenney_ui-pack/PNG/Green/Default/arrow_basic_n_small.png" id="5_t6roc"]
+[ext_resource type="Texture2D" uid="uid://bjs516r5p4wwg" path="res://themes/kenney_ui-pack/PNG/Green/Default/arrow_basic_s.png" id="6_wv6y8"]
+[ext_resource type="Script" path="res://scripts/net/VoiceChat.gd" id="8_4ihj5"]
+[ext_resource type="Texture2D" uid="uid://ddja5se3bf8q1" path="res://themes/kenney_ui-pack/PNG/Blue/Default/check_square_color_cross.png" id="9_fmvdd"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tc3s0"]
+texture = ExtResource("2_yugky")
+texture_margin_left = 10.0
+texture_margin_top = 10.0
+texture_margin_right = 10.0
+texture_margin_bottom = 10.0
+expand_margin_right = 10.0
+modulate_color = Color(0.109422, 0.623346, 0.843183, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tcrdi"]
+texture = ExtResource("4_bqv1r")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_aifqf"]
+texture = ExtResource("5_t6roc")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1v4kp"]
+texture = ExtResource("6_wv6y8")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_f6xrv"]
+
+[sub_resource type="Animation" id="Animation_yv5yv"]
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_qtuax"]
+resource_name = "chat_box_animation"
+length = 0.31
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [Color(1, 0.513726, 0.686275, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_068nj"]
+_data = {
+"RESET": SubResource("Animation_yv5yv"),
+"notification_message": SubResource("Animation_qtuax")
+}
+
+[sub_resource type="AudioStreamMicrophone" id="AudioStreamMicrophone_3hw3b"]
+
+[node name="CanvasLayer" type="CanvasLayer" node_paths=PackedStringArray("inputText", "richText", "minimizeButton", "title", "chatAnimationComp")]
+layer = 10
+script = ExtResource("1_g6ufe")
+inputText = NodePath("ChatBox/HBoxContainer/VBoxContainer/chatInput")
+richText = NodePath("ChatBox/HBoxContainer/VBoxContainer/RichTextLabel")
+minimizeButton = NodePath("ChatBox/HBoxContainer/VBoxContainer/TitleContainer/minimizeButton")
+title = NodePath("ChatBox/HBoxContainer/VBoxContainer/TitleContainer/titleLabel")
+chatAnimationComp = NodePath("ChatBox/ChatAnimationComponent")
+
+[node name="ChatBox" type="PanelContainer" parent="."]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -44.0
+offset_right = 223.0
+offset_bottom = -2.0
+grow_vertical = 0
+size_flags_horizontal = 6
+size_flags_vertical = 4
+theme = ExtResource("1_8wnd0")
+theme_override_styles/panel = SubResource("StyleBoxTexture_tc3s0")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ChatBox"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ChatBox/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="TitleContainer" type="HBoxContainer" parent="ChatBox/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="titleLabel" type="Label" parent="ChatBox/HBoxContainer/VBoxContainer/TitleContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 15
+text = "Disconected from Server"
+
+[node name="minimizeButton" type="Button" parent="ChatBox/HBoxContainer/VBoxContainer/TitleContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxTexture_tcrdi")
+theme_override_styles/hover = SubResource("StyleBoxTexture_aifqf")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_1v4kp")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_f6xrv")
+toggle_mode = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ChatBox/HBoxContainer/VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(400, 100)
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+scroll_following = true
+autowrap_mode = 1
+shortcut_keys_enabled = false
+threaded = true
+
+[node name="chatInput" type="LineEdit" parent="ChatBox/HBoxContainer/VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+max_length = 100
+shortcut_keys_enabled = false
+middle_mouse_paste_enabled = false
+
+[node name="mic" type="Button" parent="ChatBox/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 8
+theme = ExtResource("1_8wnd0")
+toggle_mode = true
+icon = ExtResource("9_fmvdd")
+
+[node name="listen" type="Button" parent="ChatBox/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 8
+theme = ExtResource("1_8wnd0")
+toggle_mode = true
+icon = ExtResource("9_fmvdd")
+
+[node name="ChatAnimationComponent" type="Node" parent="ChatBox" node_paths=PackedStringArray("animationPlayer")]
+script = ExtResource("2_2e0sf")
+animationPlayer = NodePath("notification_message_anim")
+
+[node name="notification_message_anim" type="AnimationPlayer" parent="ChatBox/ChatAnimationComponent"]
+libraries = {
+"": SubResource("AnimationLibrary_068nj")
+}
+
+[node name="ChatVoice" type="Node" parent="."]
+script = ExtResource("8_4ihj5")
+
+[node name="AudioStreamRecord" type="AudioStreamPlayer" parent="ChatVoice"]
+stream = SubResource("AudioStreamMicrophone_3hw3b")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="ChatVoice"]
+
+[connection signal="toggled" from="ChatBox/HBoxContainer/mic" to="ChatVoice" method="onRecordActive"]
+[connection signal="toggled" from="ChatBox/HBoxContainer/listen" to="ChatVoice" method="onListenActive"]

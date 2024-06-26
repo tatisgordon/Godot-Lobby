@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://chc4cs4wd112k"]
+
+[ext_resource type="Script" path="res://controlPrefabs/ChatBox/userConnectionLabel.gd" id="1_xa0tk"]
+[ext_resource type="Texture2D" uid="uid://igqsidhuq1nd" path="res://themes/kenney_ui-pack/PNG/Red/Default/check_square_color.png" id="2_6ooww"]
+[ext_resource type="Texture2D" uid="uid://c8pjt3as3nnis" path="res://themes/kenney_ui-pack/PNG/Green/Default/check_square_color_square.png" id="3_vnj38"]
+
+[node name="HBoxContainer" type="HBoxContainer" node_paths=PackedStringArray("label")]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 26.0
+grow_horizontal = 2
+script = ExtResource("1_xa0tk")
+label = NodePath("Label")
+
+[node name="DisconnectedTexture" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("2_6ooww")
+
+[node name="ConnectedTexture" type="TextureRect" parent="."]
+visible = false
+layout_mode = 2
+texture = ExtResource("3_vnj38")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "itembane"

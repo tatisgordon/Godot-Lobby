@@ -1,0 +1,11 @@
+[gd_resource type="StyleBoxTexture" load_steps=2 format=3 uid="uid://c8p3jf3csvft1"]
+
+[ext_resource type="Texture2D" uid="uid://m7mb1mnunn53" path="res://themes/kenney_ui-pack/PNG/Blue/Default/button_rectangle_border.png" id="1_se0li"]
+
+[resource]
+texture = ExtResource("1_se0li")
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+region_rect = Rect2(4, 4, 184, 56)

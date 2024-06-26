@@ -4,6 +4,7 @@
 .import/
 export.cfg
 export_presets.cfg
-
+.vscode/
 # Imported translations (automatically generated from CSV files)
 *.translation
+*.tres binary

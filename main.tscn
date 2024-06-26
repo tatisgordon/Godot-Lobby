@@ -1,191 +1,221 @@
-[gd_scene load_steps=8 format=3 uid="uid://bffcsrwff5lkq"]
+[gd_scene load_steps=10 format=3 uid="uid://bffcsrwff5lkq"]
 
-[ext_resource type="Theme" uid="uid://djlxpv3i2vrbh" path="res://MinimalUI/MinimalUI.tres" id="2_dllhr"]
-[ext_resource type="Script" path="res://menuStateMachine.gd" id="2_m7pk7"]
-[ext_resource type="StyleBox" uid="uid://b30uymi7ivhyx" path="res://themes/panleFlatStyle.tres" id="4_wpqow"]
-[ext_resource type="PackedScene" uid="uid://chc4cs4wd112k" path="res://controlPrefabs/conectedUserItem.tscn" id="6_ej5a8"]
-[ext_resource type="Script" path="res://ServerViewController.gd" id="6_ml0pv"]
-[ext_resource type="Script" path="res://loadingPanel.gd" id="7_om76q"]
-[ext_resource type="PackedScene" uid="uid://bhs0xd4r01jrb" path="res://controlPrefabs/chat_box.tscn" id="7_vyjft"]
+[ext_resource type="Script" path="res://Lobby/menuStateMachine.gd" id="2_m7pk7"]
+[ext_resource type="Theme" uid="uid://bqrp03hh3ujer" path="res://themes/new_theme.tres" id="2_xfp0n"]
+[ext_resource type="Script" path="res://Lobby/LobbyState.gd" id="6_7gjuj"]
+[ext_resource type="PackedScene" uid="uid://chc4cs4wd112k" path="res://controlPrefabs/ChatBox/conectedUserItem.tscn" id="6_ej5a8"]
+[ext_resource type="Script" path="res://Lobby/ServerViewController.gd" id="6_ml0pv"]
+[ext_resource type="Script" path="res://Lobby/loadingPanel.gd" id="7_om76q"]
+
+[sub_resource type="Gradient" id="Gradient_87swc"]
+offsets = PackedFloat32Array(0.213942, 0.838942)
+colors = PackedColorArray(0.912289, 0.912289, 0.912289, 1, 0.81, 0.81, 0.7938, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ucqi5"]
+gradient = SubResource("Gradient_87swc")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tgmge"]
+texture = SubResource("GradientTexture1D_ucqi5")
 
 [node name="Node2D" type="Node2D"]
 metadata/_edit_vertical_guides_ = [-96.0]
 
-[node name="MenuHandler" type="Node" parent="." node_paths=PackedStringArray("startView", "serverView", "clientView", "userView", "loadingPanel", "nameInput", "mainMenuPanel", "targetIpLabel", "readyButton", "startGameButton")]
+[node name="MenuHandler" type="Node" parent="." node_paths=PackedStringArray("startView", "serverView", "clientView", "userView", "loadingPanel", "nameInput", "colorInput", "mainMenuPanel", "targetIpLabel", "readyButton", "startGameButton")]
 script = ExtResource("2_m7pk7")
-startView = NodePath("../SubViewportContainer/SubViewport/background/Panel/StartView/StartView")
-serverView = NodePath("../SubViewportContainer/SubViewport/background/Panel/ServerView")
-clientView = NodePath("../SubViewportContainer/SubViewport/background/Panel/clientView")
-userView = NodePath("../SubViewportContainer/SubViewport/background/Panel/user")
-loadingPanel = NodePath("../SubViewportContainer/SubViewport/background/loading")
-nameInput = NodePath("../SubViewportContainer/SubViewport/background/Panel/user/VBoxContainer/HBoxContainer/playerName")
-mainMenuPanel = NodePath("../SubViewportContainer/SubViewport/background")
-targetIpLabel = NodePath("../SubViewportContainer/SubViewport/background/Panel/clientView/VFlowContainer/HFlowContainer/ipInput")
-readyButton = NodePath("../SubViewportContainer/SubViewport/background/Panel/ServerView/ServerView/HBoxContainer/Ready")
-startGameButton = NodePath("../SubViewportContainer/SubViewport/background/Panel/ServerView/ServerView/HBoxContainer/StartGame")
-gameScene = "res://game.tscn"
+startView = NodePath("../background/Panel/StartView/StartView")
+serverView = NodePath("../background/Panel/ServerView")
+clientView = NodePath("../background/Panel/clientView")
+userView = NodePath("../background/Panel/user")
+loadingPanel = NodePath("../background/loading")
+nameInput = NodePath("../background/Panel/user/VBoxContainer/HBoxContainer/playerName")
+colorInput = NodePath("../background/Panel/user/VBoxContainer/HBoxContainer2/ColorPickerButton")
+mainMenuPanel = NodePath("../background")
+targetIpLabel = NodePath("../background/Panel/clientView/VFlowContainer/HFlowContainer/ipInput")
+readyButton = NodePath("../background/Panel/ServerView/ServerView/HBoxContainer/Ready")
+startGameButton = NodePath("../background/Panel/ServerView/ServerView/HBoxContainer/StartGame")
+gameScene = "res://Implementation/scene/game.tscn"
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
-offset_right = 600.0
-offset_bottom = 512.0
-mouse_filter = 0
+[node name="background" type="Panel" parent="."]
+offset_top = -1.0
+offset_right = 800.0
+offset_bottom = 599.0
+theme = ExtResource("2_xfp0n")
+theme_override_styles/panel = SubResource("StyleBoxTexture_tgmge")
 
-[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
-disable_3d = true
-handle_input_locally = false
-render_target_update_mode = 4
-
-[node name="background" type="Panel" parent="SubViewportContainer/SubViewport"]
-offset_right = 512.0
-offset_bottom = 512.0
-theme = ExtResource("2_dllhr")
-
-[node name="Panel" type="PanelContainer" parent="SubViewportContainer/SubViewport/background"]
+[node name="Panel" type="PanelContainer" parent="background"]
+custom_minimum_size = Vector2(0, 400)
 layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.155
-anchor_top = 0.1
-anchor_right = 0.845
-anchor_bottom = 0.9
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -86.0
+offset_right = 160.0
+offset_bottom = 86.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = ExtResource("4_wpqow")
 
-[node name="StartView" type="MarginContainer" parent="SubViewportContainer/SubViewport/background/Panel"]
+[node name="StartView" type="MarginContainer" parent="background/Panel"]
 layout_mode = 2
 
-[node name="StartView" type="VBoxContainer" parent="SubViewportContainer/SubViewport/background/Panel/StartView"]
+[node name="StartView" type="VBoxContainer" parent="background/Panel/StartView"]
 layout_mode = 2
 
-[node name="Server" type="Button" parent="SubViewportContainer/SubViewport/background/Panel/StartView/StartView"]
+[node name="Server" type="Button" parent="background/Panel/StartView/StartView"]
+custom_minimum_size = Vector2(300, 30)
 layout_mode = 2
-text = "create Server"
+size_flags_horizontal = 4
+text = "Create Server"
 
-[node name="Client" type="Button" parent="SubViewportContainer/SubViewport/background/Panel/StartView/StartView"]
+[node name="Client" type="Button" parent="background/Panel/StartView/StartView"]
+custom_minimum_size = Vector2(300, 30)
 layout_mode = 2
-text = "create Client"
+size_flags_horizontal = 4
+size_flags_vertical = 0
+text = "Create Client"
 
-[node name="Button" type="Button" parent="SubViewportContainer/SubViewport/background/Panel/StartView/StartView"]
+[node name="Button" type="Button" parent="background/Panel/StartView/StartView"]
+custom_minimum_size = Vector2(300, 30)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
 text = "Customize Player"
 
-[node name="ServerView" type="MarginContainer" parent="SubViewportContainer/SubViewport/background/Panel"]
+[node name="ServerView" type="MarginContainer" parent="background/Panel" node_paths=PackedStringArray("lobbyManager")]
 visible = false
 layout_mode = 2
 script = ExtResource("6_ml0pv")
 playerItemLabelPrefab = ExtResource("6_ej5a8")
+lobbyManager = NodePath("../../../LobbyState")
 
-[node name="ServerView" type="VFlowContainer" parent="SubViewportContainer/SubViewport/background/Panel/ServerView"]
+[node name="ServerView" type="VFlowContainer" parent="background/Panel/ServerView"]
 layout_mode = 2
 
-[node name="vContainer" type="VBoxContainer" parent="SubViewportContainer/SubViewport/background/Panel/ServerView/ServerView"]
+[node name="vContainer" type="VBoxContainer" parent="background/Panel/ServerView/ServerView"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="SubViewportContainer/SubViewport/background/Panel/ServerView/ServerView"]
+[node name="HBoxContainer" type="HBoxContainer" parent="background/Panel/ServerView/ServerView"]
 layout_mode = 2
 size_flags_vertical = 10
 alignment = 2
 
-[node name="StartGame" type="Button" parent="SubViewportContainer/SubViewport/background/Panel/ServerView/ServerView/HBoxContainer"]
+[node name="StartGame" type="Button" parent="background/Panel/ServerView/ServerView/HBoxContainer"]
 layout_mode = 2
 disabled = true
 text = "StartGame"
 
-[node name="Ready" type="Button" parent="SubViewportContainer/SubViewport/background/Panel/ServerView/ServerView/HBoxContainer"]
+[node name="Ready" type="Button" parent="background/Panel/ServerView/ServerView/HBoxContainer"]
 layout_mode = 2
 toggle_mode = true
 text = "Ready"
 
-[node name="Cancel" type="Button" parent="SubViewportContainer/SubViewport/background/Panel/ServerView/ServerView/HBoxContainer"]
+[node name="Cancel" type="Button" parent="background/Panel/ServerView/ServerView/HBoxContainer"]
 layout_mode = 2
 text = "Cancel"
 
-[node name="clientView" type="MarginContainer" parent="SubViewportContainer/SubViewport/background/Panel"]
+[node name="clientView" type="MarginContainer" parent="background/Panel"]
 visible = false
 layout_mode = 2
 
-[node name="VFlowContainer" type="VFlowContainer" parent="SubViewportContainer/SubViewport/background/Panel/clientView"]
+[node name="VFlowContainer" type="VFlowContainer" parent="background/Panel/clientView"]
 layout_mode = 2
 
-[node name="HFlowContainer" type="FlowContainer" parent="SubViewportContainer/SubViewport/background/Panel/clientView/VFlowContainer"]
+[node name="HFlowContainer" type="FlowContainer" parent="background/Panel/clientView/VFlowContainer"]
 layout_mode = 2
 alignment = 1
 vertical = true
 
-[node name="Label" type="Label" parent="SubViewportContainer/SubViewport/background/Panel/clientView/VFlowContainer/HFlowContainer"]
+[node name="Label" type="Label" parent="background/Panel/clientView/VFlowContainer/HFlowContainer"]
 layout_mode = 2
 text = "IP:"
 
-[node name="ipInput" type="LineEdit" parent="SubViewportContainer/SubViewport/background/Panel/clientView/VFlowContainer/HFlowContainer"]
+[node name="ipInput" type="LineEdit" parent="background/Panel/clientView/VFlowContainer/HFlowContainer"]
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 text = "127.0.0.1"
 placeholder_text = "ip"
 
-[node name="joinGAme" type="Button" parent="SubViewportContainer/SubViewport/background/Panel/clientView/VFlowContainer"]
+[node name="joinGAme" type="Button" parent="background/Panel/clientView/VFlowContainer"]
 layout_mode = 2
-text = "join game"
+text = "Join Game"
 
-[node name="Cancel" type="Button" parent="SubViewportContainer/SubViewport/background/Panel/clientView/VFlowContainer"]
+[node name="Cancel" type="Button" parent="background/Panel/clientView/VFlowContainer"]
 layout_mode = 2
 text = "Cancel"
 
-[node name="user" type="MarginContainer" parent="SubViewportContainer/SubViewport/background/Panel"]
+[node name="user" type="MarginContainer" parent="background/Panel"]
 visible = false
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="SubViewportContainer/SubViewport/background/Panel/user"]
+[node name="VBoxContainer" type="VBoxContainer" parent="background/Panel/user"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="SubViewportContainer/SubViewport/background/Panel/user/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="background/Panel/user/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="SubViewportContainer/SubViewport/background/Panel/user/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="background/Panel/user/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-text = "name"
+text = "Name"
 
-[node name="playerName" type="LineEdit" parent="SubViewportContainer/SubViewport/background/Panel/user/VBoxContainer/HBoxContainer"]
+[node name="playerName" type="LineEdit" parent="background/Panel/user/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "p1"
 placeholder_text = "name"
 
-[node name="save" type="Button" parent="SubViewportContainer/SubViewport/background/Panel/user/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="background/Panel/user/VBoxContainer"]
+layout_mode = 2
+
+[node name="Color" type="Label" parent="background/Panel/user/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Color"
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="background/Panel/user/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(1, 1, 1, 1)
+
+[node name="save" type="Button" parent="background/Panel/user/VBoxContainer"]
 layout_mode = 2
 text = "Save"
 
-[node name="Cancel" type="Button" parent="SubViewportContainer/SubViewport/background/Panel/user/VBoxContainer"]
+[node name="Cancel" type="Button" parent="background/Panel/user/VBoxContainer"]
 layout_mode = 2
 text = "Cancel"
 
-[node name="ChatBox" parent="SubViewportContainer/SubViewport/background" instance=ExtResource("7_vyjft")]
-layout_mode = 1
-
-[node name="loading" type="PanelContainer" parent="SubViewportContainer/SubViewport/background"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="loading" type="PanelContainer" parent="background"]
+visible = false
+layout_mode = 2
+offset_right = 800.0
+offset_bottom = 600.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("7_om76q")
 
-[node name="loading" type="VBoxContainer" parent="SubViewportContainer/SubViewport/background/loading"]
+[node name="loading" type="VBoxContainer" parent="background/loading"]
 layout_mode = 2
 
-[node name="Loading" type="Label" parent="SubViewportContainer/SubViewport/background/loading/loading"]
+[node name="Loading" type="Label" parent="background/loading/loading"]
 layout_mode = 2
 text = "Loading..."
 
-[node name="PlayerList" type="VBoxContainer" parent="SubViewportContainer/SubViewport/background/loading/loading"]
+[node name="PlayerList" type="VBoxContainer" parent="background/loading/loading"]
 layout_mode = 2
 
-[connection signal="button_down" from="SubViewportContainer/SubViewport/background/Panel/StartView/StartView/Server" to="MenuHandler" method="_on_server_button_down"]
-[connection signal="button_down" from="SubViewportContainer/SubViewport/background/Panel/StartView/StartView/Client" to="MenuHandler" method="toClientView"]
-[connection signal="button_down" from="SubViewportContainer/SubViewport/background/Panel/StartView/StartView/Button" to="MenuHandler" method="toUserView"]
-[connection signal="button_down" from="SubViewportContainer/SubViewport/background/Panel/ServerView/ServerView/HBoxContainer/Cancel" to="MenuHandler" method="onCancelServerView"]
-[connection signal="button_down" from="SubViewportContainer/SubViewport/background/Panel/clientView/VFlowContainer/joinGAme" to="MenuHandler" method="onjoinServerButton"]
-[connection signal="button_down" from="SubViewportContainer/SubViewport/background/Panel/clientView/VFlowContainer/Cancel" to="MenuHandler" method="_on_cancel_button_down"]
-[connection signal="button_down" from="SubViewportContainer/SubViewport/background/Panel/user/VBoxContainer/save" to="MenuHandler" method="_on_save_button_down"]
-[connection signal="button_down" from="SubViewportContainer/SubViewport/background/Panel/user/VBoxContainer/Cancel" to="MenuHandler" method="_on_cancel_button_down"]
+[node name="Camera2D" type="Camera2D" parent="."]
+anchor_mode = 0
+
+[node name="LobbyState" type="Node" parent="."]
+script = ExtResource("6_7gjuj")
+
+[connection signal="button_down" from="background/Panel/StartView/StartView/Server" to="MenuHandler" method="_on_server_button_down"]
+[connection signal="button_down" from="background/Panel/StartView/StartView/Client" to="MenuHandler" method="toClientView"]
+[connection signal="button_down" from="background/Panel/StartView/StartView/Button" to="MenuHandler" method="toUserView"]
+[connection signal="button_down" from="background/Panel/ServerView/ServerView/HBoxContainer/Cancel" to="MenuHandler" method="onCancelServerView"]
+[connection signal="button_down" from="background/Panel/clientView/VFlowContainer/joinGAme" to="MenuHandler" method="onJoinServerButton"]
+[connection signal="button_down" from="background/Panel/clientView/VFlowContainer/Cancel" to="MenuHandler" method="_on_cancel_button_down"]
+[connection signal="button_down" from="background/Panel/user/VBoxContainer/save" to="MenuHandler" method="_on_save_button_down"]
+[connection signal="button_down" from="background/Panel/user/VBoxContainer/Cancel" to="MenuHandler" method="_on_cancel_button_down"]

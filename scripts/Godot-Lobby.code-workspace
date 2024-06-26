@@ -4,5 +4,20 @@
 			"path": ".."
 		}
 	],
-	"settings": {}
+	"settings": {},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"name": "GDScript: Launch Project",
+				"type": "godot",
+				"request": "launch",
+				"project": "${workspaceFolder}",
+				"debug_collisions": false,
+				"debug_paths": false,
+				"debug_navigation": false,
+				"additional_options": ""
+			}
+		]
+	}
 }

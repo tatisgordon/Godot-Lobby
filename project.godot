@@ -17,12 +17,16 @@ config/features=PackedStringArray("4.2", "Forward Plus")
 run/max_fps=60
 config/icon="res://icon.svg"
 
+[audio]
+
+driver/enable_input=true
+
 [autoload]
 
-globalData="*res://GlobalData.gd"
 Lobby="*res://scripts/net/lobby.gd"
-networkPlayerData="*res://NetworkPlayerData.gd"
 saveDataManager="*res://Implementation/SaveDataManager.gd"
+messageController="*res://controlPrefabs/message.tscn"
+chatBox="*res://controlPrefabs/ChatBox/chat_box.tscn"
 
 [display]
 
