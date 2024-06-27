@@ -1,6 +1,6 @@
 ## Godot-Lobby
 
-This is a template to create a multiplayer lobby using Godot.
+ This is a template based on ENet High-level multiplayer to create a multiplayer lobby using Godot.
 	
 ## Features:
 
